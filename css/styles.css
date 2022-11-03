@@ -1,0 +1,13 @@
+
+td {
+    background-color: silver;
+    width: 20vw;
+    height: 20vw;
+    border: 2px solid black;
+    text-align: center;
+    font-size: 10vw;
+}
+
+body {
+    background-color: rgb(192, 114, 25);
+}
