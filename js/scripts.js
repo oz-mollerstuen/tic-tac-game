@@ -35,7 +35,7 @@ function checkVals(val1, val2, val3) {
     if (val1[0] && val2[0] && val3[0]) {
         if (side[0] === side[1] && side[1] === side[2]) {
             elems.forEach(function(e) {
-                e.style.backgroundColor = "magenta";
+                e.style.backgroundColor = "teal";
             });
             return [true, val2[0]];
         }
@@ -142,3 +142,5 @@ addEventListener("load", function() {
         tile.addEventListener("click", checkTile);
     });
 });
+
+//--//
