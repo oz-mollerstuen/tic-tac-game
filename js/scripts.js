@@ -4,7 +4,6 @@ function GameClass() {
     this.turn = 0;
     this.symbol = "X";
     this.winner = "";
-    this.done = false;
 }
 
 let game = new GameClass();
@@ -30,27 +29,34 @@ function changeTurn() {
     setSymbol();
 }
 
-{/* <td id="td1a"> </td>
-<td id="td2a"> </td>
-<td id="td3a"> </td> */}
-
-function getTile(num, letter) {
-    const element = document.getElementById(`td${num}${letter.toLocaleLowerCase()}`);
-    return [element.innerText, element];
-}
-
 function checkVals(val1, val2, val3) {
     let side = [val1[0], val2[0], val3[0]];
     let elems = [val1[1], val2[1], val3[1]];
     if (val1[0] && val2[0] && val3[0]) {
         if (side[0] === side[1] && side[1] === side[2]) {
             elems.forEach(function(e) {
-                e.style.backgroundColor = "magenta"
+                e.style.backgroundColor = "magenta";
             });
             return [true, val2[0]];
         }
     }
     return [false, ""];
+}
+
+function ties() {
+    const tiles = [];
+    let empty = false
+    for (let i = 1; i < 4; i++) {
+        tiles.push(getTile(i, "a"));
+        tiles.push(getTile(i, "b"));
+        tiles.push(getTile(i, "c"));
+    }
+    tiles.forEach(function(tile) {
+        if (tile[1].innerText === "") {
+            empty = true
+        }
+    });
+    return empty === false;
 }
 
 function checks() {
@@ -76,9 +82,6 @@ function checks() {
     return [win, sym];
 }
 
-
-// UI Logic
-
 function checkTile(event) {
     if (!event.target.classList.contains("checked")) {
         event.target.innerText = game.symbol;
@@ -93,12 +96,45 @@ function checkTile(event) {
             }
         }
         if (!game.winner) {
-            changeTurn();
+            let tie = ties();
+            if (tie === false) {
+                changeTurn();
+            } else {
+                setTimeout(function() {
+                    clearBoard();
+                    game = new GameClass();
+                }, 1500);
+            }
         } else {
             console.log("winner:");
             console.log(game.winner);
+            setTimeout(function() {
+                clearBoard();
+                game = new GameClass();
+            }, 1500);
         }
     }
+}
+
+// UI Logic
+
+function clearBoard() {
+    const tiles = [];
+    for (let i = 1; i < 4; i++) {
+        tiles.push(getTile(i, "a"));
+        tiles.push(getTile(i, "b"));
+        tiles.push(getTile(i, "c"));
+    }
+    tiles.forEach(function(tile) {
+        tile[1].style.backgroundColor = "silver";
+        tile[1].classList.remove("checked");
+        tile[1].innerText = "";
+    });
+}
+
+function getTile(num, letter) {
+    const element = document.getElementById(`td${num}${letter.toLocaleLowerCase()}`);
+    return [element.innerText, element];
 }
 
 addEventListener("load", function() {
